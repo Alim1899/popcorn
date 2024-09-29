@@ -4,7 +4,7 @@ import ListBox from "../ListBox";
 import WatchedBox from "../WatchedBox";
 import { tempMovieData } from "../MovieData";
 import { tempWatchedData } from "../MovieData";
-
+import StarRating from "../Stars/StarRating";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -23,21 +23,26 @@ export default function Layout() {
   return (
     <>
       <Navbar query={query} setQuery={setQuery} movies={movies} />
-      <main className="main">
+      <div className="main">
         <ListBox
-          setListBoxOpen={setListBoxOpen}
           listBoxOpen={listBoxOpen}
+          setListBoxOpen={setListBoxOpen}
           movies={movies}
         />
         <WatchedBox
-          setWatchedBoxOpen={watchedBoxOpen}
+          setWatchedBoxOpen={setWatchedBoxOpen}
           watchedBoxOpen={watchedBoxOpen}
           watched={watched}
           avgImdbRating={avgImdbRating}
           avgUserRating={avgUserRating}
           avgRuntime={avgRuntime}
         />
-      </main>
+      </div>
+      <StarRating
+        maxRating={5}
+        messages={["Terrible", "Bad", "Okay", "Good", "Amazing"]}
+      defaultRating={3}/>
+
     </>
   );
 }

@@ -4,11 +4,11 @@ const ListBox = ({ listBoxOpen, setListBoxOpen, movies }) => {
     <div className="box">
       <button
         className="btn-toggle"
-        onClick={() => listBoxOpen((open) => !open)}
+        onClick={() => setListBoxOpen((open) => !open)}
       >
-        {setListBoxOpen ? "–" : "+"}
+        {listBoxOpen ? "–" : "+"}
       </button>
-      {setListBoxOpen && (
+      {listBoxOpen && (
         <ul className="list">
           {movies?.map((movie) => (
             <li key={movie.imdbID}>
