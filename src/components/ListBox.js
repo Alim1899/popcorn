@@ -1,5 +1,5 @@
 import React from "react";
-const ListBox = ({ listBoxOpen, setListBoxOpen, movies }) => {
+const ListBox = ({ listBoxOpen, setListBoxOpen, movies,handleSelectedMovie }) => {
   return (
     <div className="box">
       <button
@@ -11,7 +11,7 @@ const ListBox = ({ listBoxOpen, setListBoxOpen, movies }) => {
       {listBoxOpen && (
         <ul className="list">
           {movies?.map((movie) => (
-            <li key={movie.imdbID}>
+            <li key={movie.imdbID} onClick={()=>handleSelectedMovie(movie.imdbID)}>
               <img src={movie.Poster} alt={`${movie.Title} poster`} />
               <h3>{movie.Title}</h3>
               <div>

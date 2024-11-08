@@ -17,7 +17,6 @@ const Fetch = (setMovies, setIsLoading, setError,query) => {
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
-        console.log(err);
       } finally {
         setIsLoading(false);
       }
