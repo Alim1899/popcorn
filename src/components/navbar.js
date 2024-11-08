@@ -20,4 +20,4 @@ const Navbar = ({query,setQuery,movies}) => {
   )
 }
 
-export default Navbar
+export default Navbar;
