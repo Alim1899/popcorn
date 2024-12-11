@@ -3,8 +3,6 @@ import Navbar from "../navbar";
 import Loading from "../Loading";
 import ListBox from "../ListBox";
 import WatchedBox from "../WatchedBox";
-import { tempMovieData } from "../MovieData";
-import { tempWatchedData } from "../MovieData";
 import MovieDetails from "../MovieDetails";
 import Fetch from "../Fetch";
 import Error from "../Error";
@@ -12,8 +10,8 @@ const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 export default function Layout() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [watchedBoxOpen, setWatchedBoxOpen] = useState(true);
   const [listBoxOpen, setListBoxOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +24,15 @@ export default function Layout() {
   const handleCloseMovie = () => {
     setSelectedId(null);
   };
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const watchedIds = watched.map(el=> el.imdbId);
+  const watchedUserRating = watched.find((movie)=>movie.imdbId===selectedId)?.userRating
+    const handleAddWatched = (movie)=>{
+    if(watchedIds.includes(movie.imdbId)) console.log("Movie already in a list");
+    else setWatched((watched)=>[...watched,movie])
+  }
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating)).toFixed(1);
+  const avgUserRating = average(watched.map((movie) => movie.userRating)).toFixed(1);
+  const avgRuntime = average(watched.map((movie) => movie.runtime)).toFixed(1);
 
   return (
     <>
@@ -48,6 +52,9 @@ export default function Layout() {
           <MovieDetails
             selectedId={selectedId}
             onCloseMovie={handleCloseMovie}
+            onAddWatched={handleAddWatched}
+            isWatched={watched}
+            watchedUserRating={watchedUserRating}
           />
         ) : (
           <WatchedBox
