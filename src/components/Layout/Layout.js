@@ -33,7 +33,9 @@ export default function Layout() {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating)).toFixed(1);
   const avgUserRating = average(watched.map((movie) => movie.userRating)).toFixed(1);
   const avgRuntime = average(watched.map((movie) => movie.runtime)).toFixed(1);
-
+  const handleRemove = (id)=>{
+    setWatched(watched=>watched.filter((movie)=>movie.imdbId!==id))
+      }
   return (
     <>
       <Navbar query={query} setQuery={setQuery} movies={movies} />
@@ -53,7 +55,7 @@ export default function Layout() {
             selectedId={selectedId}
             onCloseMovie={handleCloseMovie}
             onAddWatched={handleAddWatched}
-            isWatched={watched}
+            watched={watched}
             watchedUserRating={watchedUserRating}
           />
         ) : (
@@ -61,8 +63,7 @@ export default function Layout() {
             setWatchedBoxOpen={setWatchedBoxOpen}
             watchedBoxOpen={watchedBoxOpen}
             watched={watched}
-            setWatched={setWatched}
-            avgImdbRating={avgImdbRating}
+handleRemove={handleRemove}            avgImdbRating={avgImdbRating}
             avgUserRating={avgUserRating}
             avgRuntime={avgRuntime}
           />

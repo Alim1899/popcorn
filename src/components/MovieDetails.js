@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import StarRating from "./Stars/StarRating";
 import Loading from "./Loading";
-const MovieDetails = ({ selectedId, onCloseMovie, onAddWatched,isWatched,watchedUserRating}) => {
+const MovieDetails = ({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+  setWatched,
+  watched,
+  watchedUserRating
+}) => {
   const KEY = "42a9ab01";
   const [movie, setMovie] = useState({});
+  const [userRating, setUserRating] = useState("")
   const [isLoading, setIsLoading] = useState(false);
-  const [userRating, setUserRating] = useState("");
   const {
     Title: title,
     Poster: poster,
@@ -50,6 +57,12 @@ const MovieDetails = ({ selectedId, onCloseMovie, onAddWatched,isWatched,watched
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   };
+ 
+  const isWatched = watched.map(movie=>movie.imdbId).includes(selectedId);
+  console.log(isWatched);
+
+   
+  
   return (
     <div className="details">
       {isLoading ? (
@@ -58,7 +71,7 @@ const MovieDetails = ({ selectedId, onCloseMovie, onAddWatched,isWatched,watched
         <>
           <header>
             <button className="btn-back" onClick={onCloseMovie}>
-              &larr;
+              🔙
             </button>
             <img src={poster} alt={`Poster of ${movie} movie`} />
             <div className="details-overview">
@@ -75,21 +88,23 @@ const MovieDetails = ({ selectedId, onCloseMovie, onAddWatched,isWatched,watched
           </header>
           <section>
             <div className="rating">
-             {!isWatched?(
-              <>
-              <StarRating
+             
+              {!isWatched ? (
+                <>
+                <StarRating
                 maxRating={10}
                 size={36}
                 onSetRating={setUserRating}
               />
-             {userRating>0&& <button className="btn-add" onClick={handleAdd}>
-                Add to List
-              </button>}
-              </>
-             ):
-             (
-              <p>You rated with movie {watchedUserRating}</p>
-             )}
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      Add to List
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>You rated with movie {watchedUserRating}</p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

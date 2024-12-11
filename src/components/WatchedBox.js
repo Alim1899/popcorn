@@ -5,7 +5,9 @@ const WatchedBox = ({
   avgImdbRating,
   avgUserRating,
   avgRuntime,
+  handleRemove
 }) => {
+  
   return (
     <div className="box">
       <button
@@ -41,22 +43,26 @@ const WatchedBox = ({
           <ul className="list">
             {watched.map((movie) => (
               <li key={movie.imdbId}>
-                <img src={movie.poster} alt={`${movie.title} poster`} />
+                <img src={movie.poster||''} alt={`${movie.title} poster`} />
                 <h3>{movie.title}</h3>
                 <div>
                   <p>
                     <span>⭐️</span>
-                    <span>{movie.imdbRating}</span>
+                    <span>{movie.imdbRating||''}</span>
                   </p>
                   <p>
                     <span>🌟</span>
-                    <span>{movie.userRating}</span>
+                    <span>{movie.userRating||''}</span>
                   </p>
                   <p>
                     <span>⏳</span>
-                    <span>{movie.runtime} min</span>
+                    <span>{movie.runtime||0} min</span>
                   </p>
                 </div>
+                <button
+  className="btn-delete"
+  onClick={() => handleRemove(movie.imdbId)} 
+>X</button>
               </li>
             ))}
           </ul>
