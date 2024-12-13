@@ -17,7 +17,6 @@ export default function Layout() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  Fetch(setMovies, setIsLoading, setError, query);
   const handleSelectedMovie = (id) => {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
   };
@@ -36,6 +35,8 @@ export default function Layout() {
   const handleRemove = (id)=>{
     setWatched(watched=>watched.filter((movie)=>movie.imdbId!==id))
       }
+      Fetch(setMovies, setIsLoading, setError, query,handleCloseMovie);
+
   return (
     <>
       <Navbar query={query} setQuery={setQuery} movies={movies} />

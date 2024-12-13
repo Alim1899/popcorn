@@ -7,11 +7,11 @@ const MovieDetails = ({
   onAddWatched,
   setWatched,
   watched,
-  watchedUserRating
+  watchedUserRating,
 }) => {
   const KEY = "42a9ab01";
   const [movie, setMovie] = useState({});
-  const [userRating, setUserRating] = useState("")
+  const [userRating, setUserRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const {
     Title: title,
@@ -44,6 +44,7 @@ const MovieDetails = ({
     };
     getMovieDetails();
   }, [selectedId, setMovie]);
+
   const handleAdd = () => {
     const newWatchedMovie = {
       imdbId: selectedId,
@@ -57,17 +58,32 @@ const MovieDetails = ({
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   };
- 
-  const isWatched = watched.map(movie=>movie.imdbId).includes(selectedId);
 
-   
-  useEffect(function() {
-    if(!title)return;
-    document.title = `Movie | ${title}`
-    return function () {
-      document.title = "usePopcorn";
-    }
-  },[title])
+  const isWatched = watched.map((movie) => movie.imdbId).includes(selectedId);
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+      return function () {
+        document.title = "usePopcorn";
+      };
+    },
+    [title]
+  );
+
+  useEffect(() => {
+    const callback =  (e) => {
+      if (e.code === "Escape") {
+        onCloseMovie();
+        console.log("sdsd");
+      }
+    };
+    document.addEventListener("keydown",callback);
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [onCloseMovie]);
   return (
     <div className="details">
       {isLoading ? (
@@ -93,14 +109,13 @@ const MovieDetails = ({
           </header>
           <section>
             <div className="rating">
-             
               {!isWatched ? (
                 <>
-                <StarRating
-                maxRating={10}
-                size={36}
-                onSetRating={setUserRating}
-              />
+                  <StarRating
+                    maxRating={10}
+                    size={36}
+                    onSetRating={setUserRating}
+                  />
                   {userRating > 0 && (
                     <button className="btn-add" onClick={handleAdd}>
                       Add to List
