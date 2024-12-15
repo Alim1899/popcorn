@@ -56,8 +56,9 @@ const MovieDetails = ({
       userRating,
     };
     onAddWatched(newWatchedMovie);
-    onCloseMovie();
+     onCloseMovie();
   };
+
 
   const isWatched = watched.map((movie) => movie.imdbId).includes(selectedId);
 
@@ -73,13 +74,13 @@ const MovieDetails = ({
   );
 
   useEffect(() => {
-    const callback =  (e) => {
+    const callback = (e) => {
       if (e.code === "Escape") {
         onCloseMovie();
         console.log("sdsd");
       }
     };
-    document.addEventListener("keydown",callback);
+    document.addEventListener("keydown", callback);
     return () => {
       document.removeEventListener("keydown", callback);
     };
