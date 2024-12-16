@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "../navbar";
 import Loading from "../Loading";
 import ListBox from "../ListBox";
 import WatchedBox from "../WatchedBox";
 import MovieDetails from "../MovieDetails";
 import Error from "../Error";
+import { useMovies } from "../CustomHooks/useMovies";
+import { useLocalStorage } from "../CustomHooks/useLocalStorage";
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-const KEY = "42a9ab01";
 export default function Layout() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    return JSON.parse(localStorage.getItem("watched"));
-  });
+  const [watched, setWatched] = useLocalStorage([],'watched');
+
   const [watchedBoxOpen, setWatchedBoxOpen] = useState(true);
   const [listBoxOpen, setListBoxOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+
+  const { movies, isLoading, error } = useMovies(query);
+
   const handleSelectedMovie = (id) => {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
   };
@@ -41,46 +41,6 @@ export default function Layout() {
   const handleRemove = (id) => {
     setWatched((watched) => watched.filter((movie) => movie.imdbId !== id));
   };
-
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const fetchMovies = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(
-          `https://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-          { signal: controller.signal }
-        );
-        if (!res.ok) throw new Error("Something went wrong");
-        const data = await res.json();
-        if (data.Response === "False") throw new Error("Movie not found");
-        setMovies(data.Search);
-        setIsLoading(false);
-        setError("");
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError("Movie not found");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    if (!query.length) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-    handleCloseMovie();
-    fetchMovies();
-    return () => {
-      controller.abort();
-    };
-  }, [setMovies, setIsLoading, setError, query]);
 
   return (
     <>

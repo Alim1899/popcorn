@@ -1,13 +1,18 @@
 import { useEffect, useRef } from "react";
+import useKey from "./CustomHooks/useKey";
 const Navbar = ({ query, setQuery, movies }) => {
   const inputEl = useRef();
-  useEffect(() => {
-    const callback = (e) => {
-      if(document.activeElement===inputEl.current) return;
-      if (e.code === "Enter") {
+
+useKey("Enter",()=>{
+ if(document.activeElement===inputEl.current) return;
+     
         inputEl.current.focus();
         setQuery("");
-      }
+})
+  useEffect(() => {
+    const callback = (e) => {
+     
+      
     };
     document.addEventListener("keydown", callback);
     return ()=>document.addEventListener('keydown',callback)

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import StarRating from "./Stars/StarRating";
 import Loading from "./Loading";
+import useKey from './CustomHooks/useKey';
 const MovieDetails = ({
   selectedId,
   onCloseMovie,
@@ -59,7 +60,7 @@ const MovieDetails = ({
      onCloseMovie();
   };
 
-
+useKey('Escape',onCloseMovie)
   const isWatched = watched.map((movie) => movie.imdbId).includes(selectedId);
 
   useEffect(
@@ -73,17 +74,6 @@ const MovieDetails = ({
     [title]
   );
 
-  useEffect(() => {
-    const callback = (e) => {
-      if (e.code === "Escape") {
-        onCloseMovie();
-      }
-    };
-    document.addEventListener("keydown", callback);
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [onCloseMovie]);
   return (
     <div className="details">
       {isLoading ? (
