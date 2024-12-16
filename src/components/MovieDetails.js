@@ -77,7 +77,6 @@ const MovieDetails = ({
     const callback = (e) => {
       if (e.code === "Escape") {
         onCloseMovie();
-        console.log("sdsd");
       }
     };
     document.addEventListener("keydown", callback);
